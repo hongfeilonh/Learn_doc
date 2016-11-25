@@ -1,0 +1,240 @@
+1.Java关键字final、static使用总结
+
+ final类不能被继承，没有子类，final类中的方法默认是final的。
+
+ final方法不能被子类的方法覆盖，但可以被继承。
+
+ final成员变量表示常量，只能被赋值一次，赋值后值不再改变(即使是null)。可以先不赋值。
+
+ final不能用于修饰构造方法。
+
+ private类型的方法默认是final类型的。
+
+
+ 静态成员变量，静态方法可以直接通过类名调用，任何的实例也都可以调用。
+
+ 静态成员变量由该类所有对象共享
+
+ 静态方法中不能调用非静态的方法或非静态成员
+
+
+2.java嵌套类(Nested Classes)总结
+
+ 成员嵌套类： 作为 enclosing class 的成员定义的，成员嵌套类有enclosing class属性。 可以使用public,private,protected访问控制符，也可以用static,final关键字
+
+ 局部嵌套类：定义在 enclosing class 的方法里面。可以使用final关键字
+
+ 匿名嵌套类：没有显示的定义一个类，直接通过new 的方法创建类的实例。不使用任何关键字和访问控制符
+
+3.this 与super?总结：
+
+super:在构造方法中，使用super(int a) ,表示调用父类的有参构造方法，
+                    使用super() 或不写，表示调用父类无参构造方法,
+注意：必须写在构造函数的第一行，否则报错
+this：在构造方法中，使用this(int a),表示调用当前类的有参构造方法
+                    使用this() ，表示调用当前类的无参构造方法
+注意：必须写在构造函数的第一行,否则报错
+
+
+
+　（一）相关类
+ class A ...{   
+	public String show(D obj)...{   
+		return ("A and D");   
+　　	} 
+	public String show(A obj)...{   
+		return ("A and A");   
+　　	} 
+}    
+class B  extends A...{   
+	public String show(B obj)...{   
+		return ("B and B");   
+　　	} 
+	public String show(A obj)...{   
+		return ("B and A");   
+　　	} 
+}   
+class C  extends B...{}    
+class D  extends B...{}   
+　　（二）问题：以下输出结果是什么？
+ A a1 =  new A();   
+　　A a2 = new B();   
+　　B b = new B();   
+　　C c = new C();    
+　　D d = new D();    
+　　System.out.println(a1.show(b));......   ① 
+　　System.out.println(a1.show(c));......   ② 
+　　System.out.println(a1.show(d));......   ③ 
+　　System.out.println(a2.show(b));......   ④ 
+　　System.out.println(a2.show(c));......   ⑤ 
+　　System.out.println(a2.show(d));......   ⑥ 
+　　System.out.println(b.show(b)); ......   ⑦ 
+　　System.out.println(b.show(c));......    ⑧ 
+　　System.out.println(b.show(d)); ......   ⑨  
+　　（三）答案
+　　①   A and A　　②   A and A　　③   A and D　　④   B and A
+　　⑤   B and A　　⑥   A and D　　⑦   B and B　　⑧   B and B
+　　⑨   A and D
+　　（四）分析
+　　①②③比较好理解，一般不会出错。
+    ④⑤就有点糊涂了，为什么输出的不是"B and B”呢？！！先来回顾一下多态性。
+   （1） 重写Overriding是父类与子类之间多态性的一种表现，
+   		 重载Overloading是一个类中多态性的一种表现。
+    		如果在子类中定义某方法与其父类有相同的名称和参数，我们说该方法被重写(Overriding)。
+    		子类的对象使用这个方法时，将调用子类中的定义，对它而言，父类中的定义如同被“屏蔽”了。
+    （2）如果在一个类中定义了多个同名的方法，它们或有不同的参数个数或有不同的参数类型，则称为方法的重载(Overloading)。
+  	 	Overloaded的方法是可以改变返回值的类型。
+  
+　　当超类对象引用变量引用子类对象时，被引用对象的类型而不是引用变量的类型决定了调用谁的成员方法，
+   但是这个被调用的方法必须是在超类中定义过的，也就是说被子类覆盖的方法。 
+  （但是如果强制把超类转换成子类的话，就可以调用子类中新添加而超类没有的方法了。）
+　
+  这里涉及方法调用的优先问题 ，
+  优先级由高到低依次为：
+	this.show(O)、
+	super.show(O)、
+	this.show((super)O)、
+	super.show((super)O)。
+让我们来看看它是怎么工作的。
+　　比如④，a2.show(b)，a2是一个引用变量，类型为A，则this为a2，b是B的一个实例，
+于是它到类A里面找show(B obj)方法，没有找到，于是到A的super(超类)找，
+而A没有超类，因此转到第三优先级this.show((super)O)，this仍然是a2，这里O为B，
+(super)O即(super)B即A，因此它到类A里面找show(A obj)的方法，类A有这个方法，
+但是由于a2引用的是类B的一个对象，B覆盖了A的show(A obj)方法，
+因此最终锁定到类B的show(A obj)，输出为"B and A”。
+　　再比如⑧，b.show(c)，b是一个引用变量，类型为B，则this为b，c是C的一个实例，
+于是它到类B找show(C obj)方法，没有找到，
+转而到B的超类A里面找，A里面也没有，
+因此也转到第三优先级this.show((super)O)，this为b，O为C，(super)O即(super)C即B，
+因此它到B里面找show(B obj)方法，找到了，由于b引用的是类B的一个对象，
+因此直接锁定到类B的show(B obj)，输出为"B and B”。
+　　按照上面的方法，可以正确得到其他的结果。
+　　问题还要继续，现在我们再来看上面的分析过程是怎么体现出蓝色字体那句话的内涵的。
+    它说：当超类对象引用变量引用子类对象时，被引用对象的类型而不是引用变量的类型决定了调用谁的成员方法，
+    但是这个被调用的方法必须是在超类中定义过的，也就是说被子类覆盖的方法。
+	还是拿a2.show(b)来说吧。
+　　	a2是一个引用变量，类型为A，它引用的是B的一个对象，
+	因此这句话的意思是由B来决定调用的是哪个方法。
+	因此应该调用B的show(B obj)从而输出"B and B”才对。
+	但是为什么跟前面的分析得到的结果不相符呢？！
+	问题在于我们不要忽略了蓝色字体的后半部分，那里特别指明：
+	这个被调用的方法必须是在超类中定义过的，也就是被子类覆盖的方法。
+	B里面的show(B obj)在超类A中有定义吗？没有！那就更谈不上被覆盖了。
+	实际上这句话隐藏了一条信息：它仍然是按照方法调用的优先级来确定的。
+	它在类A中找到了show(A obj)，如果子类B没有覆盖show(A obj)方法，
+	那么它就调用A的show(A obj)（由于B继承A，虽然没有覆盖这个方法，
+	但从超类A那里继承了这个方法，从某种意义上说，还是由B确定调用的方法，
+	只是方法是在A中实现而已）；现在子类B覆盖了show(A obj)，因此它最终锁定到B的show(A obj)。
+	这就是那句话的意义所在，到这里，我们可以清晰的理解Java的多态性了。
+
+
+
+
+4.java.long包中类说明：
+
+ 1.String类     @：CharSequence型与String型互换
+		@：char[] 型与 String型互换，String型转 byte[]型
+
+ 2
+
+
+5.java.io包中类说明
+ 
+ 1. File类      @File 类转为Path类
+ 		@File类转为URI类
+		@File类转为URL类
+
+ 2. abstract class Reader类：
+
+ 3.InputStreamReader类：    @： InputStream型转换InputStreamReader 型
+			   @：InputStreamReader 型转换byte[]型
+
+ 4.FileReader类      @：获取文件内容  File型转换 FileReader 型，，或String（路径）转换FileReader 型
+			@FileReader 型转换byte[] 型   
+
+ 5.FileInputStream类    @File 型转换 FileInputStream 型
+			
+			@ FileInputStream 型转换 FileChannel 型
+			@ FileInputStream 型转换 FileDescriptor 型
+
+ 6.BufferedReader类     @FileReader 型转换BufferedReader 型
+			@BufferedReader 型转换Byte[] 型
+			@BufferedReader 型转换String 型（行读）；
+			@BufferedReader 型转换Stream<String> 型（行流）
+
+ 7.BufferedInputStream类    @  InputStream型转换ufferedInputStream 类
+			@ufferedInputStream型转换byte[] 型
+
+ 8.ByteArrayInputStream类    @byte[] 型转换ByteArrayInputStream 型
+			@ ByteArrayInputStream 型转换byte[] 型
+
+ 9.FileWriter   @File 类转换FileWriter 类  String（文件路径）也行
+		@写入的数据有 String ，char[],int，
+
+ 10.OutputStreamWriter 类    @： OutputStream型转换OutputStreamWriter 型
+			   @：写入的数据有 String ，char[],int，方法：write，append
+
+
+
+6.关键字instanceof   ：result=object instanceof class
+说明：object 对象是class类的一个实例，则返回true
+	如果object不是指定类class 的一个实例，或object是null ，则返回false；
+
+interface A{ }
+class B implements A{ }
+class C extends B { }
+
+class instanceoftest {
+public staticvoidmain(String[] args){
+	A a=null;
+	B b=null;
+	boolean res;
+
+    System.out.println("a instanceof A:"+ (a instanceof A));
+　　System.out.println("b instanceof B:"+(b instanceof B));
+	a=new B();
+	b=new B();
+
+    System.out.println("a instanceof A:"+ (a instanceof A));
+    System.out.println("a instanceof B:"+ (a instanceof B));
+    System.out.println("b instanceof A:"+(b instanceof A));
+    System.out.println("b instanceof B:"+(b instanceof B));
+	B b2=(C)new C();
+
+    System.out.println("b2 instanceof A:"+(b2 instanceof A));
+    System.out.println("b2 instanceof B:"+(b2 instanceof B));
+    System.out.println("b2 instanceof C:"+(b2 instanceof C));
+}
+　　/*result:
+a instanceof A: false
+b instanceof B: false
+
+a instanceof A: true
+a instanceof B: true
+b instanceof A: true
+b instanceof B: true
+
+b2 instanceof A: true
+b2 instanceof B: true
+b2 instanceof C: true
+
+
+
+7java反射类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
