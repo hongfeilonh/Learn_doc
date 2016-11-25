@@ -1,0 +1,310 @@
+create table msg(
+id int,
+title varchar(60),
+name varchar(10),
+content varchar(1000)
+);
+
+insert into msg
+(id,title,name,content)
+values
+(1,'初来乍到','张三','我是老大');
+
+update msg
+set
+id=3,content='我能当老大不'
+where
+name='张三';
+
+insert into msg
+(id,title,name,content)
+values
+(2,'2标题','刘备','雌雄双剑'),
+(3,'3标题','关羽','青龙偃月刀'),
+(4,'4标题','张飞','未知兵器');
+
+ insert into goods
+ (name,price1)
+ values
+ ('电风扇',44.4454),
+ ('电饭煲',44.4453);
+
+insert into goods
+(name,price1,yea,dt)
+values
+('青花瓷',44.345,'1992','1992-02-23 23:11;10');
+
+create table userinfo(
+id int,
+username varchar(10),
+pswd varchar(10)
+);
+
+create table student(
+id int primary key auto_increment,
+password varchar(30) not null,
+username varchar(45)
+)charset utf8;
+
+insert into student
+(password,username)
+values
+('12345','hongfeilong');
+
+create table user(
+id varchar(20) primary key,
+password varchar(20) not null,
+num int not null,
+name varchar(20)
+)charset utf8;
+
+insert into user
+(id,password,num,name)
+values
+('2224','dmeq5',3,'欣慰'),
+('2567','rfgh',3,'高额'),
+('0248','fine',2,'美白的'),
+('2124','wwww',3,'js慰'),
+('2727','fjrk',4,'xdfss'),
+('2024','huolong',3,'baofen'),
+('3024','haha1',3,'此1位'),
+('5994','laixi',3,'vicn1');
+
+update user
+set num=10
+where
+id='5994';
+//建立三张表
+create table salvaging( 
+prj_num char(8) primary key,
+prj_name varchar(50),
+start_date datetime,
+end_date datetime,
+prj_status bit
+)charset utf8;
+
+create table stock(
+mat_num char(8) primary key,
+mat_name varchar(20) not null,
+speci varchar(20) not null,
+warehouse varchar(50),
+amount int,
+unit decimal(18,2)
+)charset utf8;
+total as ([amount] * [unit]),
+
+create table out_stock(
+prj_num char(8),
+mat_num char(8),
+amount int,
+get_date datetime,
+department varchar(100),
+primary key (prj_num,mat_num)
+)charset utf8;
+foreing key (prj_num) references salvaging(prj_num),
+foreing key (mat_num) references stock(mat_num)
+//修改表列的属性
+alter table out_stock
+alter column get_date int;
+
+insert into stock
+(mat_num,mat_name,speci,warehouse,amount,unit)
+values
+('m001','护套绝缘电线','BVV-120','供电局1#仓库',220,89.80),
+('m002','架空绝缘电线','10KV-150','供电局1#仓库',30,17.0),
+('m003','护套绝缘电线','BVV-35','供电局2#仓库',80,22.80),
+('m004','护套绝缘电线','BVV-50','供电局2#仓库',283,32.00),
+('m005','护套绝缘电线','BVV-70','供电局2#仓库',130,40.00);
+insert into stock
+(mat_num,mat_name,speci,warehouse,amount,unit)
+values
+('m006','护套绝缘电线','BVV-150','供电局3#仓库',46,85.0),
+('m007','架空绝缘电线','10KV-120','供电局3#仓库',85,14.080),
+('m008','护套绝缘电线','BVV-95','供电局3#仓库',164,88.0),
+('m009','交联聚乙烯绝缘电缆','YJV22-15KV','供电局4#仓库',45,719.80),
+('m010','户外真空断路器','ZW12-12','供电局4#仓库',1,13600.0);
+
+//插入数据
+insert into salvaging
+(prj_num,prj_name,start_date,end_date,prj_status)
+values
+('20100015','220KV清经线接接地箱及接地线被盗抢修','2010-10-12','2010-10-13',1),
+('20100016','沙河2#公变出站电缆老化烧毁抢修','2010-11-05','2010-11-05',1),
+('20110001','西丽站电缆短路烧毁抢修','2011-01-03','2011-01-03',1),
+('20110002','西丽站电缆接地抢修','2011-01-03','2011-01-05',1),
+('20110003','观澜站光缆抢修','2011-02-10','2011-02-11',1),
+('20110004','西丽站电缆短路烧毁抢修','2011-02-15','2011-02-15',1),
+('20110005','西丽站电缆短路烧毁抢修','2011-03-02','2011-03-05',0),
+('20110010','西丽站电缆短路烧毁抢修','2011-03-08','2011-03-10',0);
+delete from salvaging where prj_num='20110001';
+
+//修改数据
+update salvaging
+set end_date='2011-01-03 00:00:00'
+where prj_num='20110001';
+
+改变列标题的语法
+select prj_num 工程名,start_date 开始日期,end_date 结束日期
+from salvaging;
+
+//插入数据
+insert into out_stock
+(prj_num,mat_num,amount,get_date,department)
+values
+('20100015','m001',2,'2010-10-12','工程1部'),
+('20100015','m002',1,'2010-10-12','工程1部'),
+('20100016','m001',3,'2010-11-05','工程1部'),
+('20100016','m003',10,'2010-11-05','工程1部'),
+('20110001','m001',2,'2011-01-03','工程2部'),
+('20110002','m001',1,'2011-01-03','工程2部'),
+('20110002','m013',1,'2011-01-03','工程2部'),
+('20110003','m001',5,'2011-02-11','工程3部'),
+('20110003','m012',1,'2011-02-11','工程3部'),
+('20110004','m001',3,'2011-02-15','工程3部'),
+('20110004','m004',20,'2011-02-15','工程3部'),
+('20110005','m001',2,'2011-03-02','工程2部'),
+('20110005','m003',10,'2011-03-02','工程2部'),
+('20110005','m006',3,'2011-03-02','工程2部'),
+('20110010','m001',5,'2011-03-09','工程1部');
+
+//删除一行
+delete from out_stock where prj_num='20100015';
+
+select salvaging.prj_num,prj_name,mat_num,amount
+from salvaging full join out_stock
+on (salvaging.prj_num=out_stock.prj_num);
+
+select out_stock.mat_num,mat_name,prj_num
+from stock,out_stock
+where stock.mat_num=out_stock.mat_num and prj_num='20100015';
+
+select a.prj_num,a.mat_num,b.mat_num
+from out_stock a,out_stock b
+where a.prj_num=b.prj_num and a.mat_num='m001' and b.mat_num='m002';
+
+select prj_name
+from salvaging
+where prj_num in
+(select prj_num
+from out_stock
+where mat_num='m003');
+
+select mat_name,speci,amount,warehouse,avg(amount)
+from stock s1
+where amount >
+(select avg(amount)
+from stock s2
+where s2.warehouse=s1.warehouse)
+group by s1.warehouse;
+
+select mat_name,speci,amount,warehouse,avg(amount)
+from stock s1
+group by warehouse;
+
+select mat_name,speci,amount
+from stock
+where warehouse <> '供电局1#仓库' and amount<>any
+(select amount
+from stock
+where warehouse='供电局1#仓库');
+
+select prj_name
+from salvaging
+where not exists
+(select *
+from out_stock
+where prj_num=salvaging.prj_num and mat_num='m001');
+
+select *
+from salvaging
+where not exists
+(select *
+from out_stock
+where prj_num=salvaging.prj_num);
+
+select mat_name,speci
+from stock
+where not exists
+(select *
+from salvaging
+where not exists
+(select *
+from out_stock
+where prj_num=salvaging.prj_num and mat_num=stock.mat_num));
+
+select *
+from out_stock sy
+where sy.prj_num='20100016' and not exists
+(select *
+from out_stock sz
+where sz.mat_num=sy.mat_num);
+
+select distinct prj_num
+from out_stock sx
+where not exists
+(select *
+from out_stock sy
+where sy.prj_num='20100016' and not exists
+(select *
+from out_stock sz
+where sz.mat_num=sy.mat_num and sz.prj_num=sx.prj_num));
+
+select prj_num
+from out_stock
+where mat_num='m001'
+union
+select prj_num
+from out_stock
+where mat_num='m001';
+
+select *
+from stock
+where warehouse='供电局1#仓库'
+intersect
+select *
+from stock
+where unit <=50;
+
+select prj_num
+from out_stock a
+where mat_num='m001' and exists
+(select *
+from out_stock b
+where prj_num=a.prj_num and mat_num='m002');
+
+select *
+from stock
+where warehouse='供电局1#仓库'
+except
+select *
+from stock
+where unit<=50;
+
+insert into prj_cost
+select prj_num,sum(out_stock.amount*unit)
+from out_stock,stock
+where out_stock.mat_num=stock.mat_num
+group by prj_num;
+
+update out_stock
+set amount=0
+where '供电局1#仓库'=
+(select warehouse
+from stock
+where stock.mat_num=out_stock.mat_num);
+
+
+create view s1_stock
+as
+select mat_num,mat_name,speci,amount,unit
+from stock
+where warehouse='供电局1#仓库';
+
+create view s4_stock
+(mat_num,mat_name,speci,warehouse,amount)
+as(
+select mat_num,mat_name,speci,warehouse,amount
+from stock
+where warehouse='供电局1#仓库');
+ 
+

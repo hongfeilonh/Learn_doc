@@ -1,0 +1,313 @@
+Linux 安装分区
+	\boot   分区  100m
+
+	\swap   交换分区 ，一般为物理内存的2倍  ，但不要大于256m
+
+    	\       跟分区 ，尽肯能大
+
+JavaScript使用函数
+	1 document.write(<h1>嵌入一段html代码</h1>);        //直接输出
+
+	2 <button type="button" onclick="alert('Welcome!')">点击这里</button>    //点击按钮弹出提示框
+
+	3 <button type="button" onclick="myFunction()">点击这里</button>       //点击按钮，调用script自定义函数
+
+	4 <p id="demo">JavaScript 能改变 HTML 元素的内容。</p>
+	  <script>
+		function myFunction()
+		{
+		x=document.getElementById("demo");  // 找到元素，通过id标示来获取元素
+		x.innerHTML="Hello JavaScript!";    // 改变内容，  更改元素内容innerHTML方法
+		x.style.color="#ff0000";          // 改变样式
+		}
+	  </script>
+
+	5.function changeImage()
+	{
+		element=document.getElementById('myimage')      //通过id标示来获取元素
+		if (element.src.match("bulboff"))           //match方法  ，匹配
+  		{
+  			element.src="/i/eg_bulbon.gif";
+  		}
+		else if(element.src.match("bulbon"))
+  		{
+  			element.src="/i/eg_bulboff.gif";
+ 	 	}
+	}
+	</script>
+
+	<img id="myimage" onclick="changeImage()" src="/i/eg_bulboff.gif">    //id标示
+
+
+	6  
+	var x=document.getElementById("demo").value;    //var 定义变量
+	if(x==""||isNaN(x))                        //判断是否为空或非数字
+	{
+		alert("Not Numeric");
+	}
+
+	7 <script type="text/javascript" src="/js/myScript.js"></script>      //外部脚本/js/myScript.js
+
+	如果在文档已完成加载后执行 document.write，整个 HTML 页面将被覆盖：
+	
+	在 JavaScript 中，用分号来结束语句是可选的。
+	
+	avaScript 对大小写是敏感的。
+
+	JavaScript 会忽略多余的空格。您可以向脚本添加空格，来提高其可读性。下面的两行代码是等效的：
+
+
+	8  JavaScript 注释
+		//   单行注释，双斜杠
+		/* . . . .  */  多行注释
+
+	<p id="myP"></p>
+	<script>
+		var x=5;   // 声明 x 并把 5 赋值给它
+		var y=x+2; // 声明 y 并把 x+2 赋值给它
+		document.getElementById("myP").innerHTML=y // 把 y 的值写到 myP
+	</script>
+
+	9 如果重新声明 JavaScript 变量，该变量的值不会丢失：
+
+	  JavaScript 拥有动态类型
+		var y=123e5;      // 12300000
+		var z=123e-5;     // 0.00123
+
+
+	<script>                 
+		var i;
+		var cars = new Array();      //数组的申明和使用
+		cars[0] = "Audi";
+		cars[1] = "BMW";
+		cars[2] = "Volvo";
+		cars[3]=432
+		for (i=0;i<cars.length;i++)
+		{
+			document.write(cars[i] + "<br>");
+		}
+	</script>
+
+
+
+	<script>           //对象的申明和使用
+		var person={
+			firstname : "Bill",
+			lastname  : "Gates",
+			id        :  5566
+		};
+		document.write(person.lastname + "<br />");      //第一种属性寻址方式
+		document.write(person["lastname"] + "<br />");   //第二种属性寻址方式
+	</script>
+
+	10 	var person;        //person=undefined
+
+		var car=null       //car=null
+
+	11
+	<script>  
+		person=new Object();        //创建对象，并添加属性
+		person.firstname="Bill";
+		person.lastname="Gates";
+		person.age=56;
+		person.eyecolor="blue";
+		document.write(person.firstname + " is " + person.age + " years old.");
+	</script>
+
+
+	<script>
+		function myFunction(a,b)
+		{	
+			return a*b;            //return  带返回值的函数
+		}
+		document.getElementById("demo").innerHTML=myFunction(4,3);
+	</script>
+
+	局部变量会在函数运行以后被删除。
+	全局变量会在页面关闭后被删除。
+	如果把数字与字符串相加，结果将成为字符串。
+	break 语句用于跳出循环。
+	continue 用于跳过循环中的一个迭代。
+
+	12
+	var person={fname:"Bill",lname:"Gates",age:56}; 
+	for (x in person)                        //遍历对象的属性值
+	{
+		txt=txt + person[x];
+	}
+
+
+	13 自定义异常
+	<script>
+		function myFunction()
+		{
+			try
+			{ 
+				var x=document.getElementById("demo").value;
+				if(x=="")    throw "值为空";
+				if(isNaN(x)) throw "不是数字";
+				if(x>10)     throw "太大";
+				if(x<5)      throw "太小";
+			}
+			catch(err)
+			{
+				var y=document.getElementById("mess");
+				y.innerHTML="错误：" + err + "。";
+			}
+		}
+	</script>
+
+
+	14 
+	<script>
+		var x=document.getElementById("main");      //想通过id名来获取
+		var y=x.getElementsByTagName("p");         //再通过标签名获取
+		document.write('id 为 "main" 的 div 中的第一段文本是：' + y[0].innerHTML);     //再通过y[0] 来确定
+	</script>
+
+
+	15. 
+		<p id="p2">Hello World!</p>
+		<script>
+		document.getElementById("p2").style.color="blue";          //style.color  改变元素颜色
+		document.getElementById("p2").style.fontFamily="Arial";    //style.fontFamily   改变元素的字体
+		document.getElementById("p2").style.fontSize="larger";     //style.fontSize   改变元素字体的大小
+		</script>
+
+
+	16
+		<h1 onclick="this.innerHTML='谢谢!'">请点击该文本</h1>    //this  代表自己，onclick   代表点击事件
+
+
+		//在script中为元素添加事件
+		<script>
+			document.getElementById("myBtn").onclick=function(){displayDate()};
+			function displayDate()
+			{
+				document.getElementById("demo").innerHTML=Date();
+			}
+		</script>
+
+
+		//  onload 和 onunload 事件会在用户进入或离开页面时被触发。
+		//  onload 事件可用于检测访问者的浏览器类型和浏览器版本，并基于这些信息来加载网页的正确版本。
+		//  onload 和 onunload 事件可用于处理 cookie。
+		<body onload="checkCookies()">
+		<script>
+			function checkCookies()
+			{
+				if (navigator.cookieEnabled==true)    //navigator.cookieEnabled  判断cookie是否开启
+				{
+					alert("已启用 cookie")
+				}
+				else
+				{
+					alert("未启用 cookie")
+				}
+			}
+		</script>
+
+
+		//onchange   事件，失去焦点时触发
+		<input type="text" id="fname" onchange="myFunction()">
+		<script>
+			function myFunction()
+			{
+				var x=document.getElementById("fname");
+				x.value=x.value.toUpperCase();            //toUpperCase()  方法，将字符变为大写
+			}
+		</script>
+
+
+
+		//onmouseover 和 onmouseout 事件可用于在用户的鼠标移至 HTML 元素上方或移出元素时触发函数。
+		<div 
+			onmouseover="mOver(this)"      //事件可用于在用户的鼠标移至 HTML 元素上方
+			onmouseout="mOut(this)"        //事件可用于在用户的鼠标移移出 HTML 元素
+			style="
+				background-color:green;
+				width:120px;
+				height:20px;
+				padding:40px;
+				color:#ffffff;">把鼠标移到上面
+		</div>
+
+		// onmousedown、onmouseup 以及 onclick 事件
+		
+	17 	创建节点元素
+		var para=document.createElement("p");     //createElement()  方法，创建元素
+		var node=document.createTextNode("这是新段落。");    //createTextNode()  方法，创建文本节点
+		para.appendChild(node);                              //为节点添加文本节点
+		var element=document.getElementById("div1");
+		element.appendChild(para);                            //添加新创建的子节点
+
+		删除节点元素1
+		var parent=document.getElementById("div1");       //得到父元素
+		var child=document.getElementById("p1");      //得到要删除的子元素
+		parent.removeChild(child);                     //  removeChild()  方法 ，删除子元素
+		
+		删除节点元素2
+		var child=document.getElementById("p1");   //得到要删除的子元素
+		child.parentNode.removeChild(child);      //  parentNode  得到父节点
+
+	18   
+	构造对象1
+	<script>
+		function person(firstname,lastname,age,eyecolor)
+		{
+			this.firstname=firstname;
+			this.lastname=lastname;
+			this.age=age;
+			this.eyecolor=eyecolor;
+		}
+		myFather=new person("Bill","Gates",56,"blue");
+		document.write(myFather.firstname + " is " + myFather.age + " years old.");
+	</script>
+	
+
+	构造对象2
+	<script>
+		person={firstname:"Bill",lastname:"gates",age:56,eyecolor:"blue"}
+		document.write(person.firstname + " is " + person.age + " years old.");
+	</script>
+
+
+	构造对象3
+	<script>
+		person=new Object();
+		person.firstname="Bill";
+		person.lastname="Gates";
+		person.age=56;
+		person.eyecolor="blue";
+		document.write(person.firstname + " is " + person.age + " years old.");
+	</script>
+
+
+	<script>
+		function person(firstname,lastname,age,eyecolor)      //构建person对象
+		{
+			this.firstname=firstname;     // 属性
+			this.lastname=lastname;       // 属性
+			this.age=age;                 // 属性
+			this.eyecolor=eyecolor;       // 属性
+ 
+ 			this.changeName=changeName;    //与方法名对应
+			function changeName(name)      // 方法
+			{				
+				this.lastname=name;
+			}
+		}
+		myMother=new person("Steve","Jobs",56,"green");     //new 一个对象
+		myMother.changeName("Ballmer");                     //使用对象方法
+		document.write(myMother.lastname);
+	</script>
+
+
+
+
+
+
+
+
+
+
